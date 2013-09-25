@@ -8,15 +8,14 @@
 ;;==================================================
 ;;cedet插件设置
 ;;==================================================
-(add-to-list 'load-path "~/install/cedet-1.0/speedbar")
-(add-to-list 'load-path "~/install/cedet-1.0/eieio")
-(add-to-list 'load-path "~/install/cedet-1.0/semantic")
+;;(add-to-list 'load-path "~/install/cedet-1.0/speedbar")
+;;(add-to-list 'load-path "~/install/cedet-1.0/eieio")
+;;(add-to-list 'load-path "~/install/cedet-1.0/semantic")
 ;; Load CEDET.,从cedet的INSTALL中复制过来的
 ;; See cedet/common/cedet.info for configuration details.
-(load-file "~/install/cedet-1.0/common/cedet.el")
+;;(load-file "~/install/cedet-1.0/common/cedet.el")
 ;;(semantic-add-system-include "/usr/include/" 'c++-mode)
 ;; Enable EDE (Project Management) features
-(global-ede-mode 1)
 
 ;; Enable EDE for a pre-existing C++ project
 ;; (ede-cpp-root-project "NAME" :file "~/myproject/Makefile")
@@ -49,23 +48,54 @@
  ;;(global-srecode-minor-mode 1)
  
  ;;----------------------------------------------------------------------
-(semantic-load-enable-minimum-features)
-(semantic-load-enable-code-helpers)
+;; (semantic-load-enable-minimum-features)
+;;(semantic-load-enable-code-helpers)
 ;;(semantic-load-enable-guady-code-helpers)
 ;;(semantic-load-enable-excessive-code-helpers)
-(semantic-load-enable-semantic-debugging-helpers)
+;;(semantic-load-enable-semantic-debugging-helpers)
 
-(global-ede-mode t)
+;;(global-ede-mode t)
+;; (global-semantic-decoration-mode t)
+;; (global-semantic-highlight-func-mode t)
+;; (global-semantic-show-unmatched-syntax-mode t)
+
 ;;代码折叠
 ;;(require 'semantic-tag-folding nil 'noerror)
-(global-semantic-tag-folding-mode 1)
+;;(global-semantic-tag-folding-mode 1)
 ;;折叠和打开整个buffer的所有代码
-(define-key semantic-tag-folding-mode-map (kbd "C--") 'semantic-tag-folding-fold-all)
-(define-key semantic-tag-folding-mode-map (kbd "C-=") 'semantic-tag-folding-show-all)
+;;(define-key semantic-tag-folding-mode-map (kbd "C--") 'semantic-tag-folding-fold-all)
+;;(define-key semantic-tag-folding-mode-map (kbd "C-=") 'semantic-tag-folding-show-all)
 ;;折叠和打开单个buffer的所有代码
-(define-key semantic-tag-folding-mode-map (kbd "C-_") 'semantic-tag-folding-fold-block)
-(define-key semantic-tag-folding-mode-map (kbd "C-+") 'semantic-tag-folding-show-block)
+;;(define-key semantic-tag-folding-mode-map (kbd "C-_") 'semantic-tag-folding-fold-block)
+;;(define-key semantic-tag-folding-mode-map (kbd "C-+") 'semantic-tag-folding-show-block)
 
+
+;; ;; Semantic
+
+(setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
+                                  global-semanticdb-minor-mode
+								  global-cedet-m3-minor-mode
+								  global-semantic-highlight-func-mode
+								  global-semantic-decoration-mode
+								  global-semantic-idle-local-symbol-highlight-mode
+                                  global-semantic-idle-summary-mode
+                                  global-semantic-mru-bookmark-mode))
+(require 'semantic/ia)
+(require 'semantic/bovine/gcc)
+
+(defun my-c-mode-cedet-hook ()
+ (local-set-key "." 'semantic-complete-self-insert)
+ (local-set-key ">" 'semantic-complete-self-insert))
+(add-hook 'c-mode-common-hook 'my-c-mode-cedet-hook)
+
+;;(semantic-add-system-include "~/exp/include/boost_1_37" 'c++-mode)
+(semantic-mode 1)
+
+(global-ede-mode 1)
+
+;;packages based on semantic
+;;to switch between cpp/h and fast method completion
+(require 'eassist)
 
 ;;==============================================================
 ;;ecb配置
@@ -89,9 +119,13 @@
   ;;; hungry-delete and auto-newline
 ;;  (c-toggle-auto-hungry-state 1)
   (define-key c-mode-base-map [(control \`)] 'hs-toggle-hiding)
- (define-key c-mode-base-map [(return)] 'newline-and-indent)
+  (define-key c-mode-base-map [(return)] 'newline-and-indent)
 
   (define-key c-mode-base-map [(meta \`)] 'c-indent-command)
+  ;;bind key for switching cpp/h
+  (define-key c-mode-base-map (kbd "M-o") 'eassist-switch-h-cpp)
+  (define-key c-mode-base-map (kbd "M-m") 'eassist-list-methods))
+
 ;;  (define-key c-mode-base-map [(tab)] 'hippie-expand)
 ;;  (define-key c-mode-base-map [(tab)] 'my-indent-or-complete)
 ;;  (define-key c-mode-base-map [(meta ?/)] 'semantic-ia-complete-symbol-menu)
@@ -111,9 +145,9 @@
 )
 
 ;;配置Semantic搜索范围
-(setq semanticdb-project-roots
-	  (list
-	   (expand-file-name "/")))
+;; (setq semanticdb-project-roots
+;; 	  (list
+;; 	   (expand-file-name "/")))
 ;;自定义补全命令，如果单词在中间就补全，否则就tab
 (defun my-indent-or-complete()
   (interactive)
@@ -171,6 +205,21 @@
 (require 'yasnippet)    ;;not yasnippet-bundle
 (yas/initialize)
 (yas/load-directory "~/install/yasnippet-0.6.1c/snippets")
+
+;; ;; CC-mode
+;; (add-hook 'c-mode-hook '(lambda ()
+;;         (setq ac-sources (append '(ac-source-semantic) ac-sources))
+;;         (local-set-key (kbd "RET") 'newline-and-indent)
+;;         (linum-mode t)
+;;         (semantic-mode t)))
+
+;; Autocomplete
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories (expand-file-name
+             "~/.emacs.d/elpa/auto-complete-1.4.20110207/dict"))
+(setq ac-comphist-file (expand-file-name
+             "~/.emacs.d/ac-comphist.dat"))
+(ac-config-default)
 
 ;;自动补全
 ;;(require 'auto-complete-config)
