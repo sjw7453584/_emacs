@@ -72,30 +72,30 @@
 
 ;; ;; Semantic
 
-(setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
-                                  global-semanticdb-minor-mode
-								  global-cedet-m3-minor-mode
-								  global-semantic-highlight-func-mode
-								  global-semantic-decoration-mode
-								  global-semantic-idle-local-symbol-highlight-mode
-                                  global-semantic-idle-summary-mode
-                                  global-semantic-mru-bookmark-mode))
-(require 'semantic/ia)
-(require 'semantic/bovine/gcc)
+;; (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
+;;                                   global-semanticdb-minor-mode
+;; 								  global-cedet-m3-minor-mode
+;; 								  global-semantic-highlight-func-mode
+;; 								  global-semantic-decoration-mode
+;; 								  global-semantic-idle-local-symbol-highlight-mode
+;;                                   global-semantic-idle-summary-mode
+;;                                   global-semantic-mru-bookmark-mode))
+;; (require 'semantic/ia)
+;; (require 'semantic/bovine/gcc)
 
-(defun my-c-mode-cedet-hook ()
- (local-set-key "." 'semantic-complete-self-insert)
- (local-set-key ">" 'semantic-complete-self-insert))
-(add-hook 'c-mode-common-hook 'my-c-mode-cedet-hook)
+;; (defun my-c-mode-cedet-hook ()
+;;  (local-set-key "." 'semantic-complete-self-insert)
+;;  (local-set-key ">" 'semantic-complete-self-insert))
+;; (add-hook 'c-mode-common-hook 'my-c-mode-cedet-hook)
 
-;;(semantic-add-system-include "~/exp/include/boost_1_37" 'c++-mode)
-(semantic-mode 1)
+;; ;;(semantic-add-system-include "~/exp/include/boost_1_37" 'c++-mode)
+;; (semantic-mode 1)
 
-(global-ede-mode 1)
+;; (global-ede-mode 1)
 
-;;packages based on semantic
-;;to switch between cpp/h and fast method completion
-(require 'eassist)
+;; ;;packages based on semantic
+;; ;;to switch between cpp/h and fast method completion
+;; (require 'eassist)
 
 ;;==============================================================
 ;;ecb配置
@@ -123,8 +123,8 @@
 
   (define-key c-mode-base-map [(meta \`)] 'c-indent-command)
   ;;bind key for switching cpp/h
-  (define-key c-mode-base-map (kbd "M-o") 'eassist-switch-h-cpp)
-  (define-key c-mode-base-map (kbd "M-m") 'eassist-list-methods))
+;;  (define-key c-mode-base-map (kbd "M-o") 'eassist-switch-h-cpp)
+  ;;(define-key c-mode-base-map (kbd "M-m") 'eassist-list-methods))
 
 ;;  (define-key c-mode-base-map [(tab)] 'hippie-expand)
 ;;  (define-key c-mode-base-map [(tab)] 'my-indent-or-complete)
@@ -157,25 +157,25 @@
   )
 ;;补全快捷键，ctrl+tab用senator补全，不显示列表
 ;;alt+/补全，显示列表让选择
-(global-set-key [(control tab)] 'my-indent-or-complete)
-(define-key c-mode-base-map [(meta ?/)] 'semantic-ia-complete-symbol-menu)
-(autoload 'senator-try-expand-semantic "senator")
-(setq hippie-expand-try-functions-list
-	  '(
-		senator-try-expand-semantic
-		try-expand-dabbrev
-		try-expand-dabbrev-visible
-		try-expand-dabbrev-all-buffers
-		try-expand-dabbrev-from-kill
-		try-expand-list
-		try-expand-list-all-buffers
-		try-expand-line
-	p	try-expand-line-all-buffers
-		try-complete-file-name-partially
-		try-complete-file-name
-		try-expand-whole-kill
-		)
-	  )
+;; (global-set-key [(control tab)] 'my-indent-or-complete)
+;; (define-key c-mode-base-map [(meta ?/)] 'semantic-ia-complete-symbol-menu)
+;; (autoload 'senator-try-expand-semantic "senator")
+;; (setq hippie-expand-try-functions-list
+;; 	  '(
+;; 		senator-try-expand-semantic
+;; 		try-expand-dabbrev
+;; 		try-expand-dabbrev-visible
+;; 		try-expand-dabbrev-all-buffers
+;; 		try-expand-dabbrev-from-kill
+;; 		try-expand-list
+;; 		try-expand-list-all-buffers
+;; 		try-expand-line
+;; 	p	try-expand-line-all-buffers
+;; 		try-complete-file-name-partially
+;; 		try-complete-file-name
+;; 		try-expand-whole-kill
+;; 		)
+;; 	  )
 ;;cc-mode的括号自动匹配
 ;;(defun my-c-mode-auto-pair ()
 ;;  (interactive)
