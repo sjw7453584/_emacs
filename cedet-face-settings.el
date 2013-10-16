@@ -1,9 +1,9 @@
 ;; -*- Emacs-Lisp -*-
 
-;; Time-stamp: <2010-04-05 16:05:28 Monday by ahei>
+;; Time-stamp: <2013-10-16 14:38:18 Wednesday by media>
 
 (defun semantic-util-modes-face-settings ()
-  "Face settings for `semantic-util-modes'."
+  "Face settings for `semantic/util-modes'."
   (custom-set-faces
    '(semantic-highlight-func-current-tag-face
      ((((type tty)) nil)
@@ -23,7 +23,7 @@
   (semantic-util-modes-face-settings)
   (semantic-tag-highlight-face-settings))
 
-(eval-after-load "semantic-util-modes"
+(eval-after-load "semantic/util-modes"
   `(cedet-face-settings))
 
 (provide 'cedet-face-settings)

@@ -14,7 +14,7 @@
 (add-to-list 'load-path (concat cedet-root-path "contrib"))
  
 ;; select which submodes we want to activate
-(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
+;;(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
 (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
