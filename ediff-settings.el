@@ -1,6 +1,6 @@
 ;; -*- Emacs-Lisp -*-
 
-;; Time-stamp: <2010-11-04 17:06:12 Thursday by taoshanwen>
+;; Time-stamp: <2013-11-06 21:40:37 Wednesday by sjw>
 
 (global-set-key (kbd "C-x D") 'ediff)
 
@@ -43,7 +43,8 @@
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
   (require 'ediff+)
-  (ediff+-set-actual-diff-options))
+  ;;(ediff+-set-actual-diff-options)
+  )
 
 (eval-after-load "ediff"
   `(ediff-settings))

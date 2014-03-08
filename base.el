@@ -122,7 +122,7 @@
 ;; (setq tab-stop-list (cons (* x 4) tab-stop-list)))
 
 ;;设置默认工作目录
-(setq default-directory "~/work/") 
+(setq default-directory "~/") 
 
 ;;===============================================================
 ;;外观设置
@@ -300,3 +300,94 @@
 ;
 (setq default-frame-alist
  '((height . 35)(width . 100)(menubar-lines . 20)(tool-bar-lines . 0)))
+
+
+(defun qiang-comment-dwim-line (&optional arg)
+  "Replacement for the comment-dwim command.
+If no region is selected and current line is not blank and we are not at the end of the line,
+then comment current line.
+Replaces default behaviour of comment-dwim, when it inserts comment at the end of the line."
+  (interactive "*P")
+  (comment-normalize-vars)
+  (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
+      (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+    (comment-dwim arg)))
+(global-set-key "\M-;" 'qiang-comment-dwim-line)
+
+;; Smart copy, if no region active, it simply copy the current whole line
+(defadvice kill-line (before check-position activate)
+  (if (member major-mode
+              '(emacs-lisp-mode scheme-mode lisp-mode
+                                c-mode c++-mode objc-mode js-mode
+                                latex-mode plain-tex-mode))
+      (if (and (eolp) (not (bolp)))
+          (progn (forward-char 1)
+                 (just-one-space 0)
+                 (backward-char 1)))))
+ 
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive (if mark-active (list (region-beginning) (region-end))
+                 (message "Copied line")
+                 (list (line-beginning-position)
+                       (line-beginning-position 2)))))
+ 
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+ 
+;; Copy line from point to the end, exclude the line break
+(defun qiang-copy-line (arg)
+  "Copy lines (as many as prefix argument) in the kill ring"
+  (interactive "p")
+  (kill-ring-save (point)
+                  (line-end-position))
+                  ;; (line-beginning-position (+ 1 arg)))
+  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+ 
+(global-set-key (kbd "M-k") 'qiang-copy-line)
+(setq graphviz-dot-mode-syntax-table (syntax-table)) 
+
+;; ;==================== 查单词 ====================;
+
+;; ;;查英语单词
+;; (require 'sdcv)
+;; (setq sdcv-dictionary-simple-list ;; a simple dictionary list
+;;      '(
+;;        "21世纪英汉汉英双向词典"
+;;        "懒虫简明英汉词典"
+;;         "懒虫简明汉英词典"
+;;        "牛津高阶英汉双解词典"
+;;         "KDic11万英汉词典"
+;;          ))
+
+;; (setq sdcv-dictionary-complete-list ;;a complete dictionary list
+;;       '(
+;;     "21世纪英汉汉英双向词典"
+;;     "KDic11万英汉词典"
+;;         "懒虫简明英汉词典"
+;;         "朗道英汉字典5.0"
+;;         "XDICT英汉辞典"
+;;         "朗道汉英字典5.0"
+;;         "XDICT汉英辞典"
+;;         "懒虫简明汉英词典"
+;;         "牛津英汉双解美化版"
+;;         "stardict1.3英汉辞典"
+;;         "英汉汉英专业词典"
+;;         "CDICT5英汉辞典"
+;;         "Jargon"
+;;         "FOLDOC"
+;;         "WordNet 2.0"
+;;         ))
+;; (global-set-key (kbd "C-c d") 'sdcv-search-input)
+
+;;auto open files that are opened already when last time exit;
+(desktop-save-mode 1)
+
+;;emacs git
+(add-to-list 'load-path "~/_emacs/git-emacs/")
+(require 'git-emacs)
+(require 'undo-tree)

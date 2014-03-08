@@ -25,37 +25,32 @@
 (load "cyexpand.el")
 (load "cykbd.el")
 (load "addon.el")
-(load "cedet-settings.el")
+(load "cedet-bzr-settings.el")
 ;;(load "cedet-settings.el")
 ;;为了编程的配置
 (load "cycode.el")
 
-(require 'ecb)
-(require 'ecb-autoloads)
-
-(require 'smex)
+(require 'smex);
+(smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-(load "project.el")
-;; ;;ecb自动添加结束============================================================
+(load "projects.el")
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(cc-search-directories (quote ("." "/usr/include" "/usr/local/include/*" "/usr/lib/syslinux/com32/include" "/usr/lib/gcc/x86_64-linux-gnu/4.6/include" "/usr/lib/gcc/x86_64-linux-gnu/4.6/include-fixed/" "/usr/include/x86_64-linux-gnu/" "/usr/include/c++/4.6/" "/usr/include/c++/4.6/x86_64-linux-gnu/" "/usr/include/c++/4.6/backward/" "/usr/lib/syslinux/com32/include/")))
  '(column-number-mode t)
  '(display-time-mode t)
  '(ecb-options-version "2.40")
- '(global-semantic-tag-folding-mode t nil (semantic-util-modes))
+ '(ede-project-directories (quote ("/tmp/myproject/include" "/tmp/myproject/src" "/tmp/myproject")))
  '(mouse-1-click-in-non-selected-windows t)
  '(mouse-drag-copy-region t)
  '(mouse-yank-at-point t)
  '(save-place t nil (saveplace))
- '(semantic-idle-scheduler-idle-time 3)
- '(semantic-self-insert-show-completion-function (lambda nil (semantic-ia-complete-symbol-menu (point))))
+ '(semanticdb-project-roots (quote ("~/Linear_transcoder_41")))
  '(show-paren-mode t)
  '(transient-mark-mode t))
 (custom-set-faces
